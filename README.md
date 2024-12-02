@@ -15,7 +15,6 @@ My solutions for Advent Of Code 2024 written in python
 | 2   |  ✅   |   ✅   |
 
 ## Usage
-To use my solutions navigate to folder representing day/part of puzzle, for example: **``./day 1/part 1``**
 To use the solution:
 - navigate to the folder with needed day
 - save your puzzle input in the folder under **``input.txt``**
