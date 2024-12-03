@@ -7,13 +7,13 @@ __test = False
 
 baseDir = os.path.join(os.path.dirname(os.path.abspath(__file__)),os.path.pardir)
 
-inputFile = os.path.join(baseDir, "example_input.txt" if __test else "input.txt")
-input = open(inputFile, "r")
+inputFile = os.path.join(baseDir, 'example_input.txt' if __test else 'input.txt')
+input = open(inputFile, 'r')
 
 __startTime = time.time()
 
-regexFunction = "mul\(\d{1,3},\d{1,3}\)"
-regexArgument = "\d{1,3}"
+regexFunction = 'mul\(\d{1,3},\d{1,3}\)'
+regexArgument = '\d{1,3}'
 
 solution = 0
 
