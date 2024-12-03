@@ -6,14 +6,14 @@ My solutions for Advent Of Code 2024 written in python
 | Status | Description |
 | ------ | ----------- |
 | ❌     | Problem not attempted yet |
-| ✍     | Work In Progress |
+| ✍     | Working In Progress |
 | ✅     | Problem solved |
 
 | day | Part 1 | Part 2 |
 |-----|--------|--------|
 | 1   |  ✅   |   ✅   |
 | 2   |  ✅   |   ✅   |
-| 3   |  ✅   |   ✍   |
+| 3   |  ✅   |   ✅   |
 
 ## Usage
 To use the solution:
