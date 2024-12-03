@@ -1,11 +1,15 @@
 import os
+import time
+import datetime
 
-test = False
+__test = False
 
 baseDir = os.path.join(os.path.dirname(os.path.abspath(__file__)),os.path.pardir)
 
-inputFile = os.path.join(baseDir, "example_input.txt" if test else "input.txt")
+inputFile = os.path.join(baseDir, "example_input.txt" if __test else "input.txt")
 input = open(inputFile, "r")
+
+__startTime = time.time()
 
 solution = 0
 
@@ -53,4 +57,5 @@ for line in input:
                 solution += 1
                 break
 
-print(f'Solution for the puzzle: {solution}')
+__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
+print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')
