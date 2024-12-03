@@ -12,8 +12,8 @@ rightArray = []
 
 for line in input:
     leftNumber, rightNumber = line.split("   ")
-    leftArray.append(int(leftNumber));
-    rightArray.append(int(rightNumber));
+    leftArray.append(int(leftNumber))
+    rightArray.append(int(rightNumber))
 
 leftArray.sort()
 rightArray.sort()
