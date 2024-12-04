@@ -7,41 +7,42 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, 'example_input.txt'), 31]
+    [os.path.join(__baseDir, 'example_input.txt'), 2]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
 
 def solve(input):
-    leftArray = []
-    rightArray = []
-
-    for line in input:
-        leftNumber, rightNumber = line.split()
-        leftArray.append(int(leftNumber))
-        rightArray.append(int(rightNumber))
-
-    leftArray.sort()
-    rightArray.sort()
-    arrayLength = len(leftArray)
-
     solution = 0
 
-    for i in range(arrayLength):
-        currentNumber = leftArray[i]
-        try:
-            multiplier = 0
-            index = rightArray.index(currentNumber)
-            while rightArray[index] == currentNumber:
-                if index + 1 < arrayLength:
-                    index += 1
-                    multiplier += 1
-                else:
-                    break
-            solution += multiplier*currentNumber 
-        except (ValueError) as e:
-            continue
+    for line in input:
+        numbers = line.split()
+        for i in range(len(numbers)):
+            numbers[i] = int(numbers[i])
+        
+        direction = 0
 
+        for i in range(len(numbers)):
+            if i == len(numbers)-1:
+                solution += 1
+                break
+
+            diff = numbers[i+1] - numbers[i]
+            
+            if diff == 0 or abs(diff) > 3:
+                break
+
+            if direction == 0:
+                direction = diff
+
+            if direction < 0:
+                if diff > 0:
+                    break
+
+            if direction > 0:
+                if diff < 0:
+                    break
+        
     return solution
 
 def test(testSet):

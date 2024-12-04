@@ -1,46 +1,29 @@
 import os
 import time
 import datetime
+import re
 
 __test = True
 
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, 'example_input.txt'), 31]
+    [os.path.join(__baseDir, 'example_input_part_1.txt'), 161]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
 
 def solve(input):
-    leftArray = []
-    rightArray = []
-
-    for line in input:
-        leftNumber, rightNumber = line.split()
-        leftArray.append(int(leftNumber))
-        rightArray.append(int(rightNumber))
-
-    leftArray.sort()
-    rightArray.sort()
-    arrayLength = len(leftArray)
+    regexFunction = 'mul\(\d{1,3},\d{1,3}\)'
+    regexArgument = '\d{1,3}'
 
     solution = 0
 
-    for i in range(arrayLength):
-        currentNumber = leftArray[i]
-        try:
-            multiplier = 0
-            index = rightArray.index(currentNumber)
-            while rightArray[index] == currentNumber:
-                if index + 1 < arrayLength:
-                    index += 1
-                    multiplier += 1
-                else:
-                    break
-            solution += multiplier*currentNumber 
-        except (ValueError) as e:
-            continue
+    for line in input:
+        functions = re.findall(regexFunction, line)
+        for function in functions:
+            arguments = re.findall(regexArgument, function)
+            solution += int(arguments[0]) * int(arguments[1])
 
     return solution
 
