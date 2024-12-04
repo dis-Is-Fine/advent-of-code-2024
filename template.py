@@ -7,7 +7,7 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, 'example_input.txt'), 11]
+    [os.path.join(__baseDir, "INSERT TEST INPUT FILE NAME"), "INSERT EXPECTED SOLUTION"]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
