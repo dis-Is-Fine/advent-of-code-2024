@@ -14,8 +14,8 @@ __testSet = [
 __inputFile = os.path.join(__baseDir, 'input.txt')
 
 def solve(input):
-    regexFunction = 'mul\(\d{1,3},\d{1,3}\)'
-    regexArgument = '\d{1,3}'
+    regexFunction = r'mul\(\d{1,3},\d{1,3}\)'
+    regexArgument = r'\d{1,3}'
 
     solution = 0
 

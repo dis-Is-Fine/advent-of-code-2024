@@ -8,34 +8,53 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, 'example_input_part_2.txt'), 48]
+    [os.path.join(__baseDir, "example_input.txt"), 143]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
 
 def solve(input):
-    regexFunction = r'mul\(\d{1,3},\d{1,3}\)|do\(\)|don\'t\(\)'
-    regexArgument = r'\d{1,3}'
-
     solution = 0
-    enabled = True
+
+    rules = []
+    updates = []
 
     for line in input:
-        functions = re.findall(regexFunction, line)
-        for function in functions:
-            if function == 'do()':
-                enabled = True
-                continue
-            elif function == 'don\'t()':
-                enabled = False
-                continue
-            if not enabled:
+        if line == '\n':
+            continue
+        if line.find('|') < 0:
+            updates.append(list(map(int, re.findall(r'\d+', line))))
+        else:    
+            rules.append(list(map(int, re.findall(r'\d+', line))))
+
+    for i, update in enumerate(updates, 1):
+        updateCorrect = True
+
+        for rule in rules:
+            ruleLeft: int
+            ruleRight: int
+
+            try:
+                ruleLeft = update.index(rule[0])
+            except ValueError as e:
                 continue
 
-            arguments = re.findall(regexArgument, function)
-            solution += int(arguments[0]) * int(arguments[1])
-    
+            try:
+                ruleRight = update.index(rule[1])
+            except ValueError as e:
+                continue
+
+            if ruleLeft > ruleRight:
+                updateCorrect = False
+                break
+        
+        if not updateCorrect:
+            continue
+
+        solution += update[int(len(update)/2)]
+
     return solution
+
 
 def test(testSet):
     for i, [testInputFile, solution] in enumerate(testSet, 1):
@@ -44,7 +63,9 @@ def test(testSet):
         except FileNotFoundError as e:
             raise(e)
         
-        if solve(testInput) != solution:
+        result = solve(testInput)
+
+        if result != solution:
             raise RuntimeError(f'Test {i} failed!')
 
         else:
