@@ -8,8 +8,8 @@ __baseDir = os.path.dirname(__file__)
 
 __testSet = [
     [os.path.join(__baseDir, 'example_input_1.txt'), 4],
-    [os.path.join(__baseDir, 'example_input_2.txt'), 18],
     [os.path.join(__baseDir, 'example_input_3.txt'), 0],
+    [os.path.join(__baseDir, 'example_input_2.txt'), 18],
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')

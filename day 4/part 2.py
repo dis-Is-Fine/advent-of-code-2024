@@ -7,6 +7,7 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
+    [os.path.join(__baseDir, 'e.txt'), 0]
     [os.path.join(__baseDir, 'example_input_2.txt'), 9],
 ]
 
@@ -52,7 +53,7 @@ def solve(input):
         grid.append(list(line))
     
     # Add a buffer to prevent negative searchY at first line from looking to the last line
-    # check example_input_3.txt to see the edge case
+    # check example_input_4.txt to see the edge case
     # No need to add buffer for searchX as it already has a buffer (new line character)
     grid.append(list('.')*len(grid[0]))
 
