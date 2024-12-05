@@ -8,10 +8,34 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, "example_input.txt"), 143]
+    [os.path.join(__baseDir, "example_input.txt"), 123]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
+
+def swap(list, indexes):
+    tmp = list[indexes[0]]
+    list[indexes[0]] = list[indexes[1]]
+    list[indexes[1]] = tmp
+
+def checkUpdate(update, rules):
+    for rule in rules:
+        ruleLeft: int
+        ruleRight: int
+
+        try:
+            ruleLeft = update.index(rule[0])
+        except ValueError as e:
+            continue
+
+        try:
+            ruleRight = update.index(rule[1])
+        except ValueError as e:
+            continue
+
+        if ruleLeft > ruleRight:
+            return [ruleLeft, ruleRight]
+    return True
 
 def solve(input):
     solution = 0
@@ -28,28 +52,12 @@ def solve(input):
             rules.append(list(map(int, re.findall(r'\d+', line))))
 
     for update in updates:
-        updateCorrect = True
-
-        for rule in rules:
-            ruleLeft: int
-            ruleRight: int
-
-            try:
-                ruleLeft = update.index(rule[0])
-            except ValueError as e:
-                continue
-
-            try:
-                ruleRight = update.index(rule[1])
-            except ValueError as e:
-                continue
-
-            if ruleLeft > ruleRight:
-                updateCorrect = False
-                break
-        
-        if not updateCorrect:
+        indexes = checkUpdate(update, rules)
+        if type(indexes) == bool:
             continue
+        while type(indexes) != bool:
+            swap(update, indexes)
+            indexes = checkUpdate(update, rules)
 
         solution += update[int(len(update)/2)]
 
