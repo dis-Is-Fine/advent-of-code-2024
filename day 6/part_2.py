@@ -1,6 +1,7 @@
 import os
 import time
 import datetime
+import threading
 
 __test = True
 
@@ -40,6 +41,7 @@ def checkBounds(grid, position):
     return True
 
 def printGrid(grid, guard, nextPosition):
+    return
     for i in range(len(grid)):
         grid[i] = grid[i].copy()
     grid[guard[1]][guard[0]] = 'G'
@@ -48,28 +50,25 @@ def printGrid(grid, guard, nextPosition):
         print(''.join(line))
     print('='*10)
 
-def checkLoop(grid, guard, path, obstacle):
+def checkLoop(grid, guard, obstacle):
     for i in range(gridHeight):
         grid[i] = grid[i].copy()
     grid[obstacle[1]][obstacle[0]] = 'O'
+    path = []
 
     for i in range(testPathLength):
         nextPosition = getNextPosition(guard)
-
+        
         if not checkBounds(grid, nextPosition):
             return False
-                
-        while grid[nextPosition[1]][nextPosition[0]] == '#' or grid[nextPosition[1]][nextPosition[0]] == 'O':
-            rotateGuard(guard)
-            nextPosition = getNextPosition(guard)
-
-        if not checkBounds(grid, nextPosition):
-            return False
-
+        
         for step in path:
             if step == guard:
                 return obstacle
         
+        while grid[nextPosition[1]][nextPosition[0]] == '#' or grid[nextPosition[1]][nextPosition[0]] == 'O':
+            rotateGuard(guard)
+            nextPosition = getNextPosition(guard)
         # printGrid(grid.copy(), guard, nextPosition)
 
         path.append(guard.copy())
@@ -84,6 +83,7 @@ def solve(input):
     
     grid = []
     guard = []
+    guardStart = []
     path = []
     obstacles = []
 
@@ -97,6 +97,7 @@ def solve(input):
                 except ValueError as e:
                     continue
                 guard = [x, y, i]
+                guardStart = [x, y, i]
     
     gridHeight= len(grid)
     gridWidth = len(grid[0])
@@ -112,32 +113,31 @@ def solve(input):
             guardInBounds = False
             break
 
-        if grid[nextPosition[1]][nextPosition[0]] == '#':
+        while grid[nextPosition[1]][nextPosition[0]] == '#':
             rotateGuard(guard)
             nextPosition = getNextPosition(guard)
-            path.append(guard.copy())
-            moveGuard(guard, nextPosition)
-            continue
 
         if grid[nextPosition[1]][nextPosition[0]] == '^':
-            path.append(guard.copy())
+            nextPosition = getNextPosition(guard)
             moveGuard(guard, nextPosition)
             continue
 
-        for o in obstacles:
-            if o == obstacle:
-                print(f'obstacle exists: {obstacle}')
-                path.append(guard.copy())
-                moveGuard(guard, nextPosition)
-                continue
-
-        obstacle = checkLoop(grid.copy(), guard.copy(), path.copy(),nextPosition.copy())
-        if obstacle:                    
-            solution += 1
-            obstacles.append(obstacle)
-            print(f'obstacle found {obstacle}')
-
-        obstacle = None
+        else:
+            obstacle = checkLoop(grid.copy(),guardStart.copy(),nextPosition.copy())
+            if obstacle == False:
+                pass
+            else:
+                exists = False
+                for o in obstacles:
+                    if o == obstacle:
+                        print(f'obstacle exists: {obstacle}')
+                        exists = True
+                        break
+                
+                if not exists:
+                    solution += 1
+                    obstacles.append(obstacle)
+                    print(f'obstacle found {obstacle}')
 
         path.append(guard.copy())
         moveGuard(guard, nextPosition)
@@ -167,16 +167,15 @@ if __test:
     __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
     print(f'Tests completed succesfully in: {__runTime}\n{"="*45}')
 
+print("SOLUTION NOT YET WORKING CORRECTLY!!!")
+# try:
+#     input = open(__inputFile, 'r')
+# except FileNotFoundError as e:
+#     raise (e)
 
-try:
-    input = open(__inputFile, 'r')
-except FileNotFoundError as e:
-    raise (e)
-
-__startTime = time.time()
+# __startTime = time.time()
 
 # solution = solve(input)
 
 # __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%M:%S.%fs')
 # print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')
-print("Solution still Work In Progress, doesn't work on real input yet")
