@@ -7,7 +7,7 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, "example_input.txt"), 36]
+    [os.path.join(__baseDir, "example_input.txt"), 81]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
@@ -23,15 +23,6 @@ def find(grid, pos, toFind):
         except IndexError as e:
             pass
     return ret
-
-def countUnique(paths):
-    endings = []
-    for path in paths:
-        lastIndex = len(path)-1 
-        if not any(end == path[lastIndex] for end in endings):
-            endings.append(path[lastIndex])
-    
-    return len(endings)
 
 def branch(grid, paths):
     newPaths = []
@@ -66,7 +57,7 @@ def solve(input):
         paths = [[start.copy()]]
         for i in range(9):
             paths = branch(grid, paths)
-        solution += countUnique(paths)
+        solution += len(paths)
 
     return solution
 
