@@ -74,5 +74,5 @@ __startTime = time.time()
 
 solution = solve(input)
 
-__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%M:%S.%fs')
+__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
 print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')

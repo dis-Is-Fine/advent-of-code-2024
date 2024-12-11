@@ -62,7 +62,6 @@ def solve(input):
         if part != -1:
             solution += i*int(part)
             
-    print(solution)
     return solution
 
 def test(testSet):
@@ -84,7 +83,7 @@ if __test:
     for msg in test(__testSet):
         print(msg)
 
-    __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%M:%S.%fs')
+    __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
     print(f'Tests completed succesfully in: {__runTime}\n{'='*45}')
 
 try:
@@ -96,5 +95,5 @@ __startTime = time.time()
 
 solution = solve(input)
 
-__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
+__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%M:%S.%fs')
 print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')
