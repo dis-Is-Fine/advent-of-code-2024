@@ -16,7 +16,7 @@ My solutions for Advent Of Code 2024 written in python
 | 3   |  ✅   |   ✅   |
 | 4   |  ✅   |   ✅   |
 | 5   |  ✅   |   ✅   |
-| 6   |  ✅   |   ✍   |
+| 6   |  ✅   |   ✅   |
 | 7   |  ✅   |   ✅   |
 | 8   |  ✅   |   ✅   |
 | 9   |  ✅   |   ✅   |
