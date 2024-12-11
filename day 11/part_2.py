@@ -8,14 +8,14 @@ __test = True
 __baseDir = os.path.dirname(__file__)
 
 __testSet = [
-    [os.path.join(__baseDir, "example_input.txt"), 55312]
+    [os.path.join(__baseDir, "example_input.txt"), 65601038650482]
 ]
 
 __inputFile = os.path.join(__baseDir, 'input.txt')
 
 @functools.cache
 def calculateStone(iteration, stone):
-    if iteration >= 25:
+    if iteration >= 75:
         return 1
     stone = int(stone)
     if stone == 0:
@@ -38,7 +38,7 @@ def solve(input):
 
     for stone in stones:
         solution += calculateStone(0, int(stone))
-
+    
     return solution
 
 
