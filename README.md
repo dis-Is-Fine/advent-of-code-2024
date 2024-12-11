@@ -21,7 +21,7 @@ My solutions for Advent Of Code 2024 written in python
 | 8   |  ✅   |   ✅   |
 | 9   |  ✅   |   ✍   |
 | 10  |  ✅   |   ✅   |
-| 11  |  ❌   |   ❌   |
+| 9   |  ✅   |   ✍   |
 
 ## Usage
 To use the solution:
