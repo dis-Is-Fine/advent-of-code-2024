@@ -1,7 +1,6 @@
 import os
 import time
 import datetime
-import threading
 
 __test = True
 
@@ -29,63 +28,57 @@ def moveGuard(guard, nextPosition):
     guard[0] = nextPosition[0]
     guard[1] = nextPosition[1]
 
-def checkBounds(grid, position):
+def checkBounds(position):
     if position[1] < 0:
         return False
     if position[0] < 0:
         return False
-    if position[1] >= gridHeight:
+    if position[1] >= lenY:
         return False
-    if position[0] >= gridWidth:
+    if position[0] >= lenX:
         return False
     return True
 
-def printGrid(grid, guard, nextPosition):
-    return
-    for i in range(len(grid)):
-        grid[i] = grid[i].copy()
-    grid[guard[1]][guard[0]] = 'G'
-    grid[nextPosition[1]][nextPosition[0]] = 'X'
-    for line in grid:
-        print(''.join(line))
-    print('='*10)
-
-def checkLoop(grid, guard, obstacle):
-    for i in range(gridHeight):
-        grid[i] = grid[i].copy()
-    grid[obstacle[1]][obstacle[0]] = 'O'
+def simulateGuard(grid, guard, testPathLength):
     path = []
 
     for i in range(testPathLength):
         nextPosition = getNextPosition(guard)
         
-        if not checkBounds(grid, nextPosition):
+        if not checkBounds(nextPosition):
             return False
         
-        for step in path:
-            if step == guard:
-                return obstacle
-        
-        while grid[nextPosition[1]][nextPosition[0]] == '#' or grid[nextPosition[1]][nextPosition[0]] == 'O':
+        while grid[nextPosition[1]][nextPosition[0]] == '#':
             rotateGuard(guard)
             nextPosition = getNextPosition(guard)
-        # printGrid(grid.copy(), guard, nextPosition)
-
+        
+        if not checkBounds(nextPosition):
+            return False
+        
+        if any(step == guard for step in path):
+            return True
+        
         path.append(guard.copy())
         moveGuard(guard, nextPosition)
     
     return False
 
-def solve(input):
-    global gridHeight, gridWidth, testPathLength
+def printGrid(grid, obstructions):
+    for i in range(len(grid)):
+        grid[i] = grid[i].copy()
+    for o in obstructions:
+        grid[o[1]][o[0]] = 'O'
+    for line in grid:
+        print(''.join(line))
+    print('='*10)
 
+def solve(input):
     solution = 0
     
     grid = []
     guard = []
     guardStart = []
-    path = []
-    obstacles = []
+    possibleObstructions = []
 
     for y, line in enumerate(input):
         grid.append(list(line.strip()))
@@ -98,52 +91,48 @@ def solve(input):
                     continue
                 guard = [x, y, i]
                 guardStart = [x, y, i]
+                grid[y][x] = 'X'
     
-    gridHeight= len(grid)
-    gridWidth = len(grid[0])
-    testPathLength = gridHeight*gridWidth
-
     guardInBounds = True
 
-    while guardInBounds:
+    global lenY, lenX
+    lenY = len(grid)
+    lenX = len(grid[0])
 
+    while guardInBounds:
         nextPosition = getNextPosition(guard)
-        
-        if not checkBounds(grid, nextPosition):
-            guardInBounds = False
+
+        if not checkBounds(nextPosition):
             break
 
         while grid[nextPosition[1]][nextPosition[0]] == '#':
             rotateGuard(guard)
             nextPosition = getNextPosition(guard)
-
-        if grid[nextPosition[1]][nextPosition[0]] == '^':
-            nextPosition = getNextPosition(guard)
-            moveGuard(guard, nextPosition)
-            continue
-
-        else:
-            obstacle = checkLoop(grid.copy(),guardStart.copy(),nextPosition.copy())
-            if obstacle == False:
-                pass
-            else:
-                exists = False
-                for o in obstacles:
-                    if o == obstacle:
-                        print(f'obstacle exists: {obstacle}')
-                        exists = True
-                        break
-                
-                if not exists:
-                    solution += 1
-                    obstacles.append(obstacle)
-                    print(f'obstacle found {obstacle}')
-
-        path.append(guard.copy())
+            
+        if not checkBounds(nextPosition):
+            break
+        
         moveGuard(guard, nextPosition)
-                
-    return solution               
 
+        if grid[guard[1]][guard[0]] != 'X':
+            possibleObstructions.append([guard[0],guard[1]])
+
+    temp = []
+    for o in possibleObstructions:
+        if not any(t == o for t in temp):
+            temp.append(o)
+    possibleObstructions = temp
+
+    for i, o in enumerate(possibleObstructions):
+        grid[o[1]][o[0]] = '#'
+        if simulateGuard(grid, guardStart.copy(), 15000):
+            solution += 1
+            print(f'found {o}')
+        grid[o[1]][o[0]] = '.'
+        print(f'checked {i} of {len(possibleObstructions)}')
+
+    print(solution)
+    return solution
 
 def test(testSet):
     for i, [testInputFile, solution] in enumerate(testSet, 1):
@@ -167,15 +156,15 @@ if __test:
     __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%S.%fs')
     print(f'Tests completed succesfully in: {__runTime}\n{"="*45}')
 
-print("SOLUTION NOT YET WORKING CORRECTLY!!!")
-# try:
-#     input = open(__inputFile, 'r')
-# except FileNotFoundError as e:
-#     raise (e)
 
-# __startTime = time.time()
+try:
+    input = open(__inputFile, 'r')
+except FileNotFoundError as e:
+    raise (e)
 
-# solution = solve(input)
+__startTime = time.time()
 
-# __runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%M:%S.%fs')
-# print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')
+solution = solve(input)
+
+__runTime = datetime.datetime.fromtimestamp(time.time()-__startTime).strftime('%H:%M:%S.%fs')
+print(f'Solution for the puzzle: {solution}\nElapsed time: {__runTime}')
